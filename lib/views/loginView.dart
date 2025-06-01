@@ -112,7 +112,7 @@ class _LoginViewState extends State<LoginView> {
                         hintText: "enter your email",
                         label: 'Email',
                         controller: controller.email,
-                        inputType: TextInputType.text,
+                        inputType: TextInputType.emailAddress,
                       ),
                       SizedBox(
                         height: 10,
@@ -124,10 +124,27 @@ class _LoginViewState extends State<LoginView> {
                         controller: controller.password,
                         inputType: TextInputType.text,
                       ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(AppRoute.forgotPassword);
+                            },
+                            child: Text(
+                              'Forgot password?',
+                              style: TextStyle(
+                                  color: Colors.brown,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      ),
                       SizedBox(height: 20),
                       Elevatedbutton(
                         onPressed: () {
-                          Get.offAllNamed(AppRoute.chat);
+                          Get.offAllNamed(AppRoute.home);
                         },
                         backColor: Colors.brown,
                         foreColor: Colors.white,

@@ -120,7 +120,7 @@ class _RegisterViewState extends State<RegisterView> {
                         hintText: "enter your email",
                         label: 'Email',
                         controller: controller.email,
-                        inputType: TextInputType.text,
+                        inputType: TextInputType.emailAddress,
                       ),
                       SizedBox(height: 10),
                       Textfield(
@@ -140,26 +140,13 @@ class _RegisterViewState extends State<RegisterView> {
                         controller: controller.password,
                         inputType: TextInputType.text,
                       ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: Text(
-                              'Forgot password?',
-                              style: TextStyle(
-                                  color: Colors.brown,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
-                      ),
                       SizedBox(
                         height: 20,
                       ),
                       Elevatedbutton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed(AppRoute.medicalRecords);
+                        },
                         backColor: Colors.brown,
                         foreColor: Colors.white,
                         text: 'Sign up',

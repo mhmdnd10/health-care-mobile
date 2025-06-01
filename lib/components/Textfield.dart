@@ -22,6 +22,8 @@ class Textfield extends StatelessWidget {
       keyboardType: inputType,
       controller: controller,
       decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         label: Text(label),
         hintText: hintText,
         enabledBorder: OutlineInputBorder(
