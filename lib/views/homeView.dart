@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healthcareapp/controllers/homeController.dart';
 import 'package:healthcareapp/views/chatView.dart';
+import 'package:healthcareapp/views/donationsView.dart';
 import 'package:healthcareapp/views/healthView.dart';
+import 'package:healthcareapp/views/medicationsView.dart';
+import 'package:healthcareapp/views/profileView.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -15,7 +18,10 @@ class _HomeViewState extends State<HomeView> {
   final HomeController controller = Get.put(HomeController());
   final List pages = [
     HealthView(),
+    MedicationsView(),
+    DonationsView(),
     ChatView(),
+    ProfileView(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -44,10 +50,27 @@ class _HomeViewState extends State<HomeView> {
                 label: 'Health',
               ),
               BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.medical_information,
+                ),
+                label: 'Medications',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.bloodtype,
+                ),
+                label: 'Blood Donations',
+              ),
+              BottomNavigationBarItem(
                   icon: Icon(
                     Icons.chat,
                   ),
                   label: 'Chats'),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.person,
+                  ),
+                  label: 'Profile'),
             ],
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.transparent,

@@ -58,10 +58,6 @@ class _ChatViewState extends State<ChatView> {
             ),
             Row(
               children: [
-                CircleAvatar(
-                  radius: 30,
-                ),
-                SizedBox(width: 8),
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 12),

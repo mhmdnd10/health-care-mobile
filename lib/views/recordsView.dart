@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healthcareapp/components/recordDropDown.dart';
 import 'package:healthcareapp/controllers/recordController.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 
 class RecordsView extends StatefulWidget {
   const RecordsView({super.key});
@@ -144,6 +143,7 @@ class _RecordsViewState extends State<RecordsView> {
               TextField(
                 maxLines: 4,
                 decoration: InputDecoration(
+                  alignLabelWithHint: true,
                   label: Text('Medical notes'),
                   isDense: true,
                   contentPadding: EdgeInsets.all(8),

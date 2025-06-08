@@ -38,11 +38,15 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               obsqureText: false,
             ),
             SizedBox(height: 15),
-            Elevatedbutton(
-                onPressed: () {},
-                backColor: Colors.blue,
-                foreColor: Colors.white,
-                text: 'Send Reset Link'),
+            Obx(
+              () =>controller.isLoading.value? CircularProgressIndicator(color: Colors.green,strokeWidth:4 ,): Elevatedbutton(
+                  onPressed: () {
+                    controller.forgotPassword();
+                  },
+                  backColor: Colors.blue,
+                  foreColor: Colors.white,
+                  text: 'Send Reset Link'),
+            ),
           ],
         ),
       ),

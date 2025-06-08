@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healthcareapp/components/Textfield.dart';
 import 'package:healthcareapp/components/elevatedButton.dart';
+import 'package:healthcareapp/controllers/globalController.dart';
 import 'package:healthcareapp/controllers/registerController.dart';
 import 'package:healthcareapp/routes/appRoute.dart';
 
@@ -14,6 +15,7 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   RegisterController controller = Get.put(RegisterController());
+  GlobalController globalController = Get.put(GlobalController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,29 +72,33 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   child: Column(
                     children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/google.png',
-                                width: 50,
-                                height: 50,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                "Sign up with google!",
-                                style: TextStyle(
-                                  fontSize: 18,
+                      Obx(
+                        () => globalController.isLoading.value? CircularProgressIndicator(color: Colors.green,strokeWidth:4 ,): GestureDetector(
+                          onTap: () {
+                            globalController.signInwithGoogle();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  'assets/google.png',
+                                  width: 50,
+                                  height: 50,
                                 ),
-                              ),
-                            ],
+                                SizedBox(width: 10),
+                                Text(
+                                  "Sign up with google!",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -128,7 +134,7 @@ class _RegisterViewState extends State<RegisterView> {
                         hintText: "enter your phone number",
                         label: 'Phone',
                         controller: controller.phone,
-                        inputType: TextInputType.number,
+                        inputType: TextInputType.text,
                       ),
                       SizedBox(
                         height: 10,
@@ -143,13 +149,15 @@ class _RegisterViewState extends State<RegisterView> {
                       SizedBox(
                         height: 20,
                       ),
-                      Elevatedbutton(
-                        onPressed: () {
-                          Get.toNamed(AppRoute.medicalRecords);
-                        },
-                        backColor: Colors.brown,
-                        foreColor: Colors.white,
-                        text: 'Sign up',
+                      Obx(
+                        () =>controller.isLoading.value? CircularProgressIndicator(color: Colors.green,strokeWidth:4 ,): Elevatedbutton(
+                          onPressed: () {
+                            controller.register();
+                          },
+                          backColor: Colors.blue,
+                          foreColor: Colors.white,
+                          text: 'Sign up',
+                        ),
                       ),
                       SizedBox(
                         height: 20,
@@ -167,7 +175,7 @@ class _RegisterViewState extends State<RegisterView> {
                             child: Text(
                               'Sign in!',
                               style: TextStyle(
-                                  color: Colors.brown,
+                                  color: Colors.blue,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),

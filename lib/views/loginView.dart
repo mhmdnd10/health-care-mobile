@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healthcareapp/components/Textfield.dart';
 import 'package:healthcareapp/components/elevatedButton.dart';
+import 'package:healthcareapp/controllers/globalController.dart';
 import 'package:healthcareapp/controllers/loginController.dart';
 import 'package:healthcareapp/routes/appRoute.dart';
 
@@ -14,6 +15,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   LoginController controller = Get.put(LoginController());
+  GlobalController globalController = Get.put(GlobalController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,29 +72,33 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   child: Column(
                     children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/google.png',
-                                width: 50,
-                                height: 50,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                "Sign in with google!",
-                                style: TextStyle(
-                                  fontSize: 18,
+                      Obx(
+                        () => globalController.isLoading.value? CircularProgressIndicator(color: Colors.green,strokeWidth:4 ,): GestureDetector(
+                          onTap: () {
+                            globalController.signInwithGoogle();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  'assets/google.png',
+                                  width: 50,
+                                  height: 50,
                                 ),
-                              ),
-                            ],
+                                SizedBox(width: 10),
+                                Text(
+                                  "Sign in with google!",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -135,20 +141,22 @@ class _LoginViewState extends State<LoginView> {
                             child: Text(
                               'Forgot password?',
                               style: TextStyle(
-                                  color: Colors.brown,
+                                  color: Colors.blue,
                                   fontWeight: FontWeight.bold),
                             ),
                           )
                         ],
                       ),
                       SizedBox(height: 20),
-                      Elevatedbutton(
-                        onPressed: () {
-                          Get.offAllNamed(AppRoute.home);
-                        },
-                        backColor: Colors.brown,
-                        foreColor: Colors.white,
-                        text: 'Sign in',
+                      Obx(
+                        () => controller.isLoading.value ? CircularProgressIndicator(color: Colors.green,strokeWidth: 4,) : Elevatedbutton(
+                          onPressed: () {
+                            controller.login();
+                          },
+                          backColor: Colors.blue,
+                          foreColor: Colors.white,
+                          text: 'Sign in',
+                        ),
                       ),
                       SizedBox(
                         height: 20,
@@ -166,7 +174,7 @@ class _LoginViewState extends State<LoginView> {
                             child: Text(
                               'Sign up!',
                               style: TextStyle(
-                                  color: Colors.brown,
+                                  color: Colors.blue,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
