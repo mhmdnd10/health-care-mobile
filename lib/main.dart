@@ -11,6 +11,16 @@ void main() async {
     url: 'https://snyuieadbifqwkjgsnmr.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNueXVpZWFkYmlmcXdramdzbm1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxMTQxNTEsImV4cCI6MjA2MzY5MDE1MX0.FCFl6YeK2TTR5PVj4XZIdB5aH_jwsWja96SKCub1D7A',
   );
+
+  
+  Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+    if (data.event == AuthChangeEvent.signedIn) {
+      Get.offAllNamed(AppRoute.home);
+    } else if (data.event == AuthChangeEvent.signedOut) {
+      Get.offAllNamed(AppRoute.login);
+    }
+  });
+
   runApp(const MyApp());
 }
 
@@ -26,7 +36,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        initialRoute: AppRoute.register,
+        initialRoute: Supabase.instance.client.auth.currentUser != null ? AppRoute.home : AppRoute.login,
         getPages: AppPage.pages,
       ),
     );
