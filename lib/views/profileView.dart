@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healthcareapp/components/refreshData.dart';
 import 'package:healthcareapp/controllers/profileController.dart';
 import 'package:healthcareapp/routes/appRoute.dart';
 
@@ -13,6 +14,11 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   ProfileController controller=Get.put(ProfileController());
   @override
+  void initState() {
+    super.initState();
+    controller.getUserProfile();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -21,41 +27,52 @@ class _ProfileViewState extends State<ProfileView> {
         title: const Text('My Profile',style: TextStyle(fontWeight: FontWeight.bold),),
         centerTitle: true,
       ),
-      body:Padding(padding: EdgeInsets.all(12),child: Column(
-        children: [
-         Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: ListTile(
-             title: Text('Mhmd Nd',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13),),
-             subtitle: Text('+961 81 037 986',style: TextStyle(fontSize: 12),),
-             trailing: GestureDetector(
-              onTap: (){
-                Get.toNamed(AppRoute.editProfile);
-              },
-               child: Container(
-                padding: EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                  color: Colors.lightBlueAccent,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(Icons.arrow_forward_ios,color: Colors.white,),),
-             ),
-          ),
-         ), 
-         SizedBox(height: 20),
-         _profileItem(icon: Icons.lock, title: 'Change Password',onTap: (){
-          Get.toNamed(AppRoute.changePassword);
-         },),
-         SizedBox(height: 10),
-         Obx(() => controller.isLoading.value ? Center(child: CircularProgressIndicator(color: Colors.green,strokeWidth: 4,),) : _profileItem(icon: Icons.logout, title: 'Logout',onTap: (){
-          controller.logout();
-         },),),      
-        ],
-      ),) ,
-    );
+      body:RefreshData(onRefresh: ()async{
+        controller.getUserProfile();
+      },
+       child: ListView(
+         padding: EdgeInsets.all(12),
+          children: [
+             Column(
+               children: [
+                 Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Obx(
+                    () => ListTile(
+                       title: Text(controller.name.value,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13),),
+                       subtitle: Text(controller.phone.value,style: TextStyle(fontSize: 12),),
+                       trailing: GestureDetector(
+                        onTap: (){
+                          Get.toNamed(AppRoute.editProfile);
+                        },
+                         child: Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Colors.lightBlueAccent,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Icon(Icons.arrow_forward_ios,color: Colors.white,),),
+                       ),
+                    ),
+                  ),
+                 ), 
+                 SizedBox(height: 20),
+                 _profileItem(icon: Icons.lock, title: 'Change Password',onTap: (){
+                  Get.toNamed(AppRoute.changePassword);
+                 },),
+                 SizedBox(height: 10),
+                 Obx(() => controller.isLoading.value ? Center(child: CircularProgressIndicator(color: Colors.green,strokeWidth: 4,),) : _profileItem(icon: Icons.logout, title: 'Logout',onTap: (){
+                  controller.logout();
+                 },),),
+               ],
+             ),      
+            ],
+          ),),
+       );
+      
   }
 
   Widget _profileItem({

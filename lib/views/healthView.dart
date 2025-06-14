@@ -119,30 +119,21 @@ class _HealthViewState extends State<HealthView> {
             ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white),
-                    onPressed: () {},
-                    child: Text('Save File'),
-                  ),
-                  SizedBox(width: 7),
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          backgroundColor: Colors.grey[300],
-                          foregroundColor: Colors.black),
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white),
                       onPressed: () {},
-                      child: Text('Go to Dashboard'),
+                      child: Text('Save File'),
                     ),
                   ),
+                 
                 ],
               ),
             )

@@ -13,6 +13,10 @@ class EditProfileView extends StatefulWidget {
 class _EditProfileViewState extends State<EditProfileView> {
   EditProfileController controller = Get.put(EditProfileController());
   @override
+  void initState() {
+    super.initState();
+    controller.loadUserData();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -30,7 +34,11 @@ class _EditProfileViewState extends State<EditProfileView> {
           SizedBox(height: 20,),
           _profileItem(icon: Icons.phone,controller: controller.phone,),
           SizedBox(height: 20,),
-          Elevatedbutton(onPressed: (){}, text: 'Save',foreColor: Colors.white,backColor: Colors.blue,),
+          Obx(
+            () => controller.isLoading.value ? Center(child: CircularProgressIndicator(color: Colors.green,strokeWidth: 4,),) : Elevatedbutton(onPressed: (){
+              controller.editProfile();
+            }, text: 'Save',foreColor: Colors.white,backColor: Colors.blue,),
+          ),
         ],
       ),),
     );

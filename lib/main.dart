@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:healthcareapp/routes/appPage.dart';
 import 'package:healthcareapp/routes/appRoute.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -7,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   await Supabase.initialize(
     url: 'https://snyuieadbifqwkjgsnmr.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNueXVpZWFkYmlmcXdramdzbm1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxMTQxNTEsImV4cCI6MjA2MzY5MDE1MX0.FCFl6YeK2TTR5PVj4XZIdB5aH_jwsWja96SKCub1D7A',

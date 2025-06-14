@@ -29,13 +29,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-           _changePasswordItem(
-             title: 'Current Password',
-             controller: _controller.currentPassword,
-             hintText: 'Current Password',
-             obscured: _controller.currentPasswordObscured
-           ),
-           SizedBox(height: 20),
+          
         
            _changePasswordItem(
              title: 'New Password',
@@ -52,7 +46,9 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
            ),
             SizedBox(height: 40),
 
-            Elevatedbutton(onPressed: (){}, text: 'Confirm',foreColor: Colors.white,backColor: Colors.blue,),
+            Obx(() =>_controller.isLoading.value ? Center(child: CircularProgressIndicator(color: Colors.green,strokeWidth: 4,),) : Elevatedbutton(onPressed: (){
+              _controller.changePassword();
+            }, text: 'Confirm',foreColor: Colors.white,backColor: Colors.blue,)),
           ],
         ),
       ),

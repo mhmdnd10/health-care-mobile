@@ -12,9 +12,15 @@ class ChatView extends StatefulWidget {
 class _ChatViewState extends State<ChatView> {
   ChatController controller = Get.put(ChatController());
   @override
+  void initState() {
+    super.initState();
+    controller.isLoading.value ? Center(child: CircularProgressIndicator(color: Colors.green,strokeWidth: 4,),) : controller.getChats();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         title: Text(
           'Chat with AI',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -28,11 +34,12 @@ class _ChatViewState extends State<ChatView> {
             Expanded(
               child: Obx(
                 () => ListView.builder(
+                
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   itemCount: controller.messages.length,
                   itemBuilder: (context, index) {
                     final message = controller.messages[index];
-                    bool isMe = message['sender'] == 'me';
+                    bool isMe = message['type']=='user';
                     return Align(
                       alignment:
                           isMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -44,10 +51,10 @@ class _ChatViewState extends State<ChatView> {
                           color: isMe ? Colors.blue : Colors.grey[200],
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Text(
+                        child:Text(
                           message['text']!,
                           style: TextStyle(
-                              color: isMe ? Colors.white : Colors.black,
+                              color:  isMe?Colors.white:Colors.black,
                               fontSize: 16),
                         ),
                       ),
@@ -72,7 +79,7 @@ class _ChatViewState extends State<ChatView> {
                         border: InputBorder.none,
                         suffixIcon: IconButton(
                           onPressed: () {
-                            controller.sendMessage(controller.content.text);
+                            controller.sendMessage();
                             controller.content.clear();
                           },
                           icon: Icon(
