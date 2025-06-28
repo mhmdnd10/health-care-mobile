@@ -1,5 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:healthcareapp/routes/appRoute.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -26,7 +28,19 @@ class RegisterController extends GetxController {
       print(user);
       
       if (user != null) {
-        // Show success dialog
+        final fcmToken = await FirebaseMessaging.instance.getToken();
+        print('fcm token: $fcmToken');
+        await supabase.from('users').insert({
+          'id': user.id, 
+          'device_notification_token': fcmToken,
+          'name': name.text,
+          'phone_number': phone.text,
+          'email': email.text,
+          'is_verified':false,
+          
+          });
+        final box=GetStorage(); 
+        box.write('device_notification_token', fcmToken);
         Get.defaultDialog( 
           title: 'Success',
           content: Column(

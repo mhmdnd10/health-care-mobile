@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healthcareapp/components/refreshData.dart';
@@ -67,6 +68,8 @@ class _ProfileViewState extends State<ProfileView> {
                  Obx(() => controller.isLoading.value ? Center(child: CircularProgressIndicator(color: Colors.green,strokeWidth: 4,),) : _profileItem(icon: Icons.logout, title: 'Logout',onTap: (){
                   controller.logout();
                  },),),
+                 
+                
                ],
              ),      
             ],
