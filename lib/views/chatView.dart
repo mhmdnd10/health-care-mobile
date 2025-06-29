@@ -14,7 +14,7 @@ class _ChatViewState extends State<ChatView> {
   @override
   void initState() {
     super.initState();
-    controller.isLoading.value ? Center(child: CircularProgressIndicator(color: Colors.green,strokeWidth: 4,),) : controller.getChats();
+    controller.getChats();
   }
   @override
   Widget build(BuildContext context) {

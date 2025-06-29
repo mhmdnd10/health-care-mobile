@@ -1,4 +1,9 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:healthcareapp/controllers/healthController.dart';
+import 'package:open_file/open_file.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HealthView extends StatefulWidget {
   const HealthView({super.key});
@@ -8,17 +13,20 @@ class HealthView extends StatefulWidget {
 }
 
 class _HealthViewState extends State<HealthView> {
+  HealthController controller=Get.put(HealthController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         title: Text(
           'Upload a File',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: Padding(
+      body: Obx(
+        () => controller.isLoading.value ? Center(child: CircularProgressIndicator(color: Colors.green,strokeWidth: 4,),) : Padding(
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
@@ -26,7 +34,9 @@ class _HealthViewState extends State<HealthView> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap:
+                      controller.uploadFile,
+                   
                     child: Container(
                       padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
@@ -43,103 +53,96 @@ class _HealthViewState extends State<HealthView> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Text(
-                      'Date',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Text(
-                      'Type',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                ),
-              ],
+            SizedBox(height: 30),
+            
+            Obx(
+              () {
+                if(controller.uploadedFiles.isEmpty){
+                  return Expanded(child: Center(child: Text('No files uploaded yet',style: TextStyle(color: Colors.grey),),),);
+                }
+                return ListView.separated(
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 20);
+                },
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: controller.uploadedFiles.length,
+                itemBuilder: (context, index) {
+                    final file = controller.uploadedFiles[index];
+                    final fileUrl = file['file_url'];
+                    final fileName = file['file_name'];
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('file name'),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: ()async{
+                            if(fileUrl!=null){
+                              final Uri url=Uri.parse(fileUrl!);
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(url, mode: LaunchMode.externalApplication);
+                              } else {
+                                Get.snackbar('Error', 'Could not launch file URL',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                                );
+                              }
+                            }else {
+                              Get.snackbar('Error', 'File path is not available',
+                              colorText: Colors.white,
+                              backgroundColor: Colors.red,
+                              );
+                            }
+                          },
+                          child: Container(
+                                   padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          
+                              child: Text(
+                              fileName??'no file',
+                               style: TextStyle(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                                ),
+                          
+                          ),
+                        ),
+                      ),
+                   
+                  ],
+                );
+              },
+              );
+              }
             ),
-            SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.grey[200],
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  label: Text(
-                    'Description',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  alignLabelWithHint: true,
-                  enabledBorder:
-                      OutlineInputBorder(borderSide: BorderSide.none),
-                  focusedBorder:
-                      OutlineInputBorder(borderSide: BorderSide.none),
-                  hintText: 'Type anything...',
-                ),
-                maxLines: 5,
-              ),
-            ),
-            SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('File name'),
-                Text(
-                  'data.pdf',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    'Change',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Expanded(
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white),
-                      onPressed: () {},
-                      child: Text('Save File'),
-                    ),
-                  ),
+            // Expanded(
+            //   child: Row(
+            //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     crossAxisAlignment: CrossAxisAlignment.end,
+            //     children: [
+            //       Expanded(
+            //         child: ElevatedButton(
+            //           style: ElevatedButton.styleFrom(
+            //               shape: RoundedRectangleBorder(
+            //                   borderRadius: BorderRadius.circular(10)),
+            //               backgroundColor: Colors.blue,
+            //               foregroundColor: Colors.white),
+            //           onPressed: () {},
+            //           child: Text('Save File'),
+            //         ),
+            //       ),
                  
-                ],
-              ),
-            )
+            //     ],
+            //   ),
+            // )
           ],
         ),
       ),
-    );
+    ));
   }
 }

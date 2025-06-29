@@ -55,8 +55,8 @@ class ChatController extends GetxController {
         content.clear();
         print('message sent successfully');
         
-        await Future.delayed(Duration(milliseconds: 500));
-        await getChats();
+        // await Future.delayed(Duration(milliseconds: 500));
+        // await getChats();
       } on DioException catch(e){
         Get.snackbar('Error', e.toString());
       }finally{

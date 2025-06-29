@@ -41,6 +41,7 @@ class RegisterController extends GetxController {
           });
         final box=GetStorage(); 
         box.write('device_notification_token', fcmToken);
+        box.write('user_id', user.id);
         Get.defaultDialog( 
           title: 'Success',
           content: Column(
